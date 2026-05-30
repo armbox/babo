@@ -1,0 +1,2 @@
+Convert text from command-line arguments to UPPERCASE.
+If no arguments, print "Usage: upper <text>"

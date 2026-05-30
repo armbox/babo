@@ -1,0 +1,10 @@
+Create a full-featured HTTP web server with the following capabilities:
+- Serve static files from the current directory
+- Support GET and POST requests
+- Parse JSON request bodies and return JSON responses
+- Include a /health endpoint that returns server status
+- Include a /api/time endpoint that returns the current server time as JSON
+- Use Python's built-in http.server module — no external packages
+- Log all requests to stdout with timestamp, method, path, and status code
+- Default port: 8080, configurable via --port argument
+- Print "Server running on http://localhost:<port>" on startup

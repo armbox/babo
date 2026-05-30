@@ -1,0 +1,5 @@
+A reusable string utility module. Accept a string and an operation name.
+Usage: string_utils <text> <operation>
+Operations: upper, lower, reverse, length, capitalize
+Output just the result, nothing else.
+Example: string_utils hello upper → outputs "HELLO"

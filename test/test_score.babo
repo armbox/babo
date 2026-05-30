@@ -1,0 +1,5 @@
+Use the rich package to display a formatted score table.
+Accept multiple "name:score" pairs as command-line arguments.
+Example: score Alice:85 Bob:92 Charlie:78
+Sort by score descending and display as a rich Table.
+If no arguments, print "Usage: score <name:score> ..."

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "babo-lang"
+version = "0.1.0"
+description = "The universal language even a fool can use. Describe programs in .babo files and watch them come to life."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    {name = "Babo Language Project"}
+]
+keywords = ["babo", "code-generation", "claude", "natural-language-programming"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Code Generators",
+]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/armbox/babo.git"
+
+[project.scripts]
+babo = "babo.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["babo*"]

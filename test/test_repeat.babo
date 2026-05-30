@@ -1,0 +1,5 @@
+Repeat a string N times, concatenated on one line, no newlines between repetitions.
+Usage: repeat <count> <string>
+count is a non-negative integer.
+If arguments are missing or count is not a number, print usage.
+Example: repeat 3 Hi → HiHiHi

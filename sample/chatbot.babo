@@ -1,0 +1,12 @@
+Create an interactive chatbot with multiple personality modes.
+Features:
+- Multiple bot personalities: philosopher, pirate, robot, fortune-cookie, shrink
+- Command: /mode <name> to switch personality
+- Command: /history to see conversation history
+- Command: /clear to clear history
+- Command: /quit to exit
+- Each personality responds differently to the same input
+- Keep conversation context/history for the session
+- Use rich package for colored output with each personality having its own color
+- Fun ASCII art banner on startup
+- No external AI APIs — use creative rule-based responses with a large bank of templates

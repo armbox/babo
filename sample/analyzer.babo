@@ -1,0 +1,10 @@
+Create a CSV data analyzer tool that reads a CSV file and produces statistics.
+Usage: analyze <file.csv>
+Features:
+- Count total rows and columns
+- Show column names and their data types
+- For numeric columns: min, max, mean, median, standard deviation
+- For text columns: unique count, most common values (top 5)
+- For date columns: earliest, latest, range
+- Print results in a beautifully formatted table using the rich package
+- If file doesn't exist, print a clear error message

@@ -1,0 +1,5 @@
+Print the nth Fibonacci number.
+Usage: fib <n>  (n is a non-negative integer)
+If no argument or invalid input, print usage.
+Output format: "fib(<n>) = <value>"
+F(0)=0, F(1)=1, F(2)=1, F(3)=2, ...

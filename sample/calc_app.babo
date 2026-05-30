@@ -1,0 +1,19 @@
+A calculator application that uses other .babo modules.
+Call sample/math_ops.babo for all math operations via call_babo().
+Call sample/string_utils.babo for string formatting via call_babo().
+
+The program takes three arguments: <num1> <num2> <operation>
+Operations: add, sub, mul, div, pow, mod, max, min, avg, fancy
+
+For "fancy" operation: compute sum and product using math_ops.babo,
+then produce a rich-formatted output showing:
+- Both input numbers
+- Their sum (via call_babo to math_ops)
+- Their product (via call_babo to math_ops)
+- Both numbers converted to uppercase words via string_utils.babo (use num2words package)
+
+For simple operations (add, sub, mul, div, pow, mod): use math_ops.babo.
+For max/min/avg: compute directly in Python.
+
+Use the rich package for beautiful output formatting.
+If no arguments or wrong operation, print usage.

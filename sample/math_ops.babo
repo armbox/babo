@@ -1,0 +1,5 @@
+A reusable math operations module. Accept two numbers as arguments and an operation name.
+Usage: math_ops <num1> <num2> <operation>
+Operations: add, sub, mul, div, pow, mod
+Output just the numeric result, nothing else.
+Example: math_ops 10 3 add → outputs "13"

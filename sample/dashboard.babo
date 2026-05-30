@@ -1,0 +1,12 @@
+Create a real-time system monitoring dashboard for the terminal.
+Use the rich package for live updating display.
+Features:
+- Live CPU usage percentage (poll every 1 second)
+- Live memory usage (used/total and percentage)
+- Disk usage for the current directory
+- Network: show hostname and local IP address
+- Uptime display (how long the dashboard has been running)
+- A live-updating progress bar showing CPU usage
+- Clean layout with panels and colors
+- Exit when user presses 'q'
+Use psutil package for system metrics.

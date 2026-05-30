@@ -1,0 +1,12 @@
+Create an interactive text adventure game set in a mysterious space station.
+Features:
+- Player explores multiple interconnected rooms with descriptions
+- Each room has items to collect, puzzles to solve, or enemies to face
+- Simple combat system (attack, defend, use item)
+- Inventory management (pick up, drop, use items)
+- At least 8 rooms with a clear objective: find the reactor core and shut it down
+- ASCII art for major rooms and events
+- Command parser that understands natural verbs (go, take, use, look, attack, inventory, help)
+- Save/load game state to a JSON file
+- A help system that explains all commands
+The game starts with: "=== SPACE STATION OMEGA-7: REACTOR CRISIS ==="

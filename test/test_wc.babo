@@ -1,0 +1,3 @@
+Count words, characters, and lines in text from command-line arguments or stdin.
+Use the rich package to display results in a Panel.
+If no arguments, read from stdin.

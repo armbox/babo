@@ -1,0 +1,2 @@
+Reverse a string given as a command-line argument.
+If no argument, print "Usage: reverse <text>"

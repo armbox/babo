@@ -1,0 +1,3 @@
+Sum all numbers given as command-line arguments.
+If no arguments, print "Usage: sum <num1> <num2> ..."
+Output format: "Sum: <number>"

@@ -1,0 +1,4 @@
+Generate a greeting message.
+Usage: greet <name> [--loud]
+Default output: "Hello, <name>!"
+With --loud: same message but in UPPERCASE

@@ -1,0 +1,2 @@
+Echo back any command-line arguments as output.
+If no arguments, print "Usage: echo <message>"

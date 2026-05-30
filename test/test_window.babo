@@ -1,0 +1,6 @@
+Use PyQt6 to open a simple GUI window.
+Window title: "Babo Test Window"
+Window size: approximately 1/4 of the screen
+Display "Hello from Babo!" in large bold text centered in the window.
+Auto-close the window after 2 seconds.
+Print "Window opened" to console when the window appears.

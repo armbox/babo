@@ -1,0 +1,4 @@
+Add two numbers given as command-line arguments.
+Usage: program <num1> <num2>
+If arguments are missing, print usage.
+Output format: "Result: <sum>"

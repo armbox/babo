@@ -1,0 +1,3 @@
+Find the longest string among multiple command-line arguments.
+If no arguments, print "Usage: longest <text1> <text2> ..."
+Output format: "Longest: <string> (length: <number>)"

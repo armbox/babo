@@ -1,0 +1,4 @@
+Fetch a URL from a command-line argument and print the HTTP response status code.
+If no URL given, print "Usage: fetch <url>"
+Use the requests package.
+Output format: "Status code: <code>"
