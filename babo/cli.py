@@ -91,12 +91,22 @@ def write_file(path: str | Path, content: str) -> None:
 # ---------------------------------------------------------------------------
 
 def is_fresh(babo_file: str) -> bool:
-    """Check if the cached implementation is fresher than the source."""
+    """Check if the cached implementation is fresher than the source.
+
+    Returns True only when all conditions are met:
+      - Source .babo file exists
+      - Cache directory exists and contains a babo entry file
+      - Cache mtime > source mtime
+    """
     if not os.path.isfile(babo_file):
         return False
 
     cd = cache_dir_for(babo_file)
     if not cd.is_dir():
+        return False
+
+    # The entry file must actually exist — an empty cache dir is not fresh
+    if not (cd / "babo").is_file():
         return False
 
     src_mtime = get_mtime(babo_file)
@@ -131,7 +141,7 @@ def save_metadata(babo_file: str) -> None:
 def build_implementation(babo_file: str) -> bool:
     """Call claude -p to generate an implementation from the .babo description.
 
-    The generated code is written to .babo/<hash>/ along with a venv
+    The generated code is written to .baboc/<name>.baboc/ along with a venv
     and any required packages.
     """
     if not os.path.isfile(babo_file):
@@ -213,8 +223,10 @@ DO NOT output code as text — write actual files to {cd}/
             capture_output=True, text=True
         )
         if venv_result.returncode != 0:
-            print(f"[babo] Warning: venv creation failed — {venv_result.stderr}", file=sys.stderr)
-        elif requirements.is_file():
+            print(f"[babo] Error: venv creation failed — {venv_result.stderr}", file=sys.stderr)
+            return False
+
+        if requirements.is_file():
             pip = str(venv_dir / "bin" / "pip")
             pip_result = subprocess.run(
                 [pip, "install", "-r", str(requirements)],
@@ -222,6 +234,12 @@ DO NOT output code as text — write actual files to {cd}/
             )
             if pip_result.returncode != 0:
                 print(f"[babo] Warning: package install failed — {pip_result.stderr}", file=sys.stderr)
+
+        # Verify the entry file was actually created
+        if not (cd / "babo").is_file():
+            print(f"[babo] Error: build completed but no 'babo' entry file found in {cd}",
+                  file=sys.stderr)
+            return False
 
         # Update timestamp on the cache directory
         touch(str(cd))
