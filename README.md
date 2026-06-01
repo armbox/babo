@@ -577,6 +577,23 @@ Each module runs in its own isolated venv, can be developed independently, and c
 
 ---
 
+### Shebang Scripts
+
+`.babo` files can run directly as executables with a shebang line:
+
+```bash
+#!/usr/bin/env babo
+Print "Hello, World!" using the rich package.
+```
+
+```bash
+$ chmod +x hello.babo
+$ ./hello.babo
+Hello, World!
+```
+
+---
+
 ## Why "Babo"?
 
 "Babo" (바보) means "fool" in Korean. Named it that because a truly universal language should be so simple that even a fool — or a tired student at 3 AM — could use it.
