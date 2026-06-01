@@ -197,6 +197,7 @@ DO NOT output code as text — write actual files to {cd}/
             [
                 "claude",
                 "-p", prompt,
+                "--bare",
                 "--permission-mode", "acceptEdits",
                 "--allowedTools", "Write,Edit,Bash,Read",
                 "--output-format", "text",
