@@ -19,9 +19,9 @@
 └──────────────┘     └───────────────┘     └────────────────────┘
 ```
 
-1. **Write** a `.babo` file describing what you want in plain English
+1. **Write** a `.babo` script describing what you want in plain English. Be specific about inputs, outputs, and behavior — stated requirements are followed literally by the build system. If your project has multiple components, describe how they connect. If it uses external packages, name them. If it has a CLI, describe each command and its arguments.
 2. **Run** `babo <file>.babo` — the tool checks if a cached build exists
-3. **Build** — if needed, Claude Code reads the description and generates a complete, runnable implementation
+3. **Build** — if needed, an AI backend reads the description and generates a complete, runnable implementation. The build prompt adds three critical rules: respect what is stated literally, always produce working code, and handle any execution environment gracefully.
 4. **Execute** — the generated program runs immediately, with its own virtual environment and dependencies
 
 ### Cache System — Like Python's `.pyc`, but for Babo
@@ -51,8 +51,9 @@ project/
 | Lives next to the source file | Lives next to the source file |
 | Deleted with `find . -name '__pycache__' -exec rm -rf {} +` | Deleted with `babo clean` |
 
-- **First run**: build → cache → execute
-- **Subsequent runs** (if `.babo` file unchanged): execute directly from cache — - **Modify the `.babo` file**: Babo detects the stale cache and rebuilds automatically
+- **First run**: build → cache → execute. The build system generates everything needed — entry point, package list, virtual environment — from the description alone. No scaffolding, no boilerplate, no manual wiring.
+- **Subsequent runs** (if `.babo` script unchanged): execute directly from cache
+- **Modify the `.babo` script**: Babo detects the stale cache and rebuilds automatically
 
 ---
 
@@ -75,7 +76,7 @@ babo --help
 
 ## Quick Start
 
-Create a file named `hello.babo`:
+Create a file named `hello.babo`. A good `.babo` script describes what should happen (behavior), what it needs (dependencies), and how it should be invoked (interface):
 
 ```
 Print "Hello, World!" in rainbow colors using the rich package.
@@ -106,7 +107,7 @@ babo clean                       Clear all cached builds
 
 ### Passing Arguments
 
-Arguments after the `.babo` file are forwarded to the generated program:
+Arguments after the `.babo` file are forwarded to the generated program. When writing a `.babo` script that accepts arguments, describe the expected input format and how each argument should be used:
 
 ```bash
 babo greet.babo Alice --loud
@@ -116,6 +117,8 @@ babo greet.babo Alice --loud
 ---
 
 ## Examples
+
+The best `.babo` scripts follow a simple pattern: state the purpose, describe the interface (arguments, flags, input/output format), list dependencies, and specify edge cases. The AI backend handles architecture, error handling, and implementation details — you focus on *what*, not *how*.
 
 ### Basic CLI Tools
 
@@ -237,6 +240,8 @@ $ babo asdfghjkl.babo
 ---
 
 ### Example Babo Scripts
+
+For larger projects, describe the architecture in sections — what each component does, how they connect, and what the entry points are. The build system handles file layout, package structure, and wiring automatically. Below are real `.babo` scripts that produce fully functional programs from descriptions alone.
 
 These showcase what Babo can create from longer descriptions. Each example shows the `.babo` source file (plain language description) followed by what Babo produces.
 
@@ -473,7 +478,7 @@ Babo supports a module system: any `.babo` program can call another `.babo` file
 
 **How to write a module-based `.babo` script:**
 
-When you write a `.babo` file that needs to call another module, simply describe the dependency in plain language. For example:
+When you write a `.babo` file that needs to call another module, simply describe the dependency in plain language — which module to call, what to pass it, and what to do with the result. The build system wires the `call_babo()` invocations automatically. For example:
 
 ```
 A calculator app. Call math_ops.babo for addition and multiplication.
