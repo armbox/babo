@@ -58,7 +58,7 @@ run_ns_test() {
     fi
 }
 
-cd "$DIR"
+cd "$DIR/.."
 
 TOTAL=19
 
