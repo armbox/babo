@@ -1,0 +1,61 @@
+Create the Babo CLI tool — a self-hosting natural-language scripting runtime.
+
+This program reads .babo files (plain-text descriptions of what a program should do), calls Claude Code to compile them into runnable Python implementations, caches the results in .baboc directories alongside the source files, and executes them.
+
+CLI usage: babo <file.babo> [args...]
+
+Commands:
+  babo <file.babo> [args...]     Run a .babo file (auto-build if needed, forward extra args)
+  babo run <file.babo> [args...] Explicit run
+  babo check <file.babo>         Check if cache is fresh (print FRESH or STALE)
+  babo build <file.babo>         Force rebuild
+  babo info <file.babo>          Show cache details (file path, cache dir, mtime, status, file listing)
+  babo clean                     Recursively remove all .baboc/ cache directories
+
+Implementation details:
+
+1. CACHE SYSTEM (.pyc-style):
+   - hello.babo → .baboc/hello.baboc/ (alongside the source file)
+   - Inside cache: babo entry script, requirements.txt, packages.txt, venv/, metadata.json
+   - Check freshness: .baboc/<name>.baboc/ mtime > source .babo mtime AND babo entry file exists
+
+2. BUILD (calls claude -p):
+   - Read the .babo file content as the program description
+   - Copy a runtime.py module into the cache directory (provides call_babo() for cross-module calls)
+   - Call: claude -p <prompt> --bare --permission-mode acceptEdits --allowedTools Write,Edit,Bash,Read --output-format text --max-budget-usd 5
+   - The claude prompt MUST tell it to:
+     * Always use Python, create a file named "babo" (no .py extension, with shebang, chmod +x)
+     * Generate complete runnable code from the description — no matter how vague or nonsensical
+     * Create requirements.txt + packages.txt if external packages needed
+     * Use Write tool to create files, Bash for chmod
+     * runtime.py is available for calling other .babo files via call_babo()
+   - After claude-p returns successfully, create a Python virtualenv in cache/venv
+   - If requirements.txt exists, pip install -r requirements.txt into the venv
+   - Verify the babo entry file was actually created, return success/failure
+   - Never print status messages on success, only errors to stderr
+
+3. RUN:
+   - Use venv/bin/python3 if available, else sys.executable
+   - Find entry point: babo > main.py > first *.py
+   - Run from the .babo file's source directory (not cache dir), passing extra args
+   - Handle FileNotFoundError, PermissionError, and general exceptions with error messages
+
+4. MODULE SYSTEM (runtime.py):
+   - During build, copy a runtime.py module into the cache directory
+   - runtime.py provides call_babo(babo_file, *args) → returns stdout string
+   - call_babo() shells out to "python3 -m babo run <file>" to invoke other .babo files
+   - Each module runs in its own venv, no package conflicts
+   - Record the system python path in .babo_python file at build time for cross-venv calls
+
+5. CLI:
+   - If first arg is a known command (run/check/build/info/clean), dispatch to that command
+   - If first arg is a .babo file or ends with .babo, treat as run command
+   - Support --help/-h
+
+6. SHEBANG SUPPORT:
+   - .babo files with "#!/usr/bin/env babo" as first line work as executable scripts
+
+7. The tool itself must be pip-installable with pyproject.toml and a babo/ package.
+
+Use the rich package for colored error output. Everything else is stdlib.
+No external dependencies needed beyond rich.
