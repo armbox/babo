@@ -96,7 +96,7 @@ Hello, World!
 ## Usage
 
 ```
-babo <file.babo> [args...]       Run a .babo file (auto-build if needed)
+babo <file.babo> [args...]       Run a .babo script (auto-build if needed)
 babo run <file.babo> [args...]   Explicit run
 babo check <file.babo>           Check if cache is fresh (FRESH/STALE)
 babo build <file.babo>           Force rebuild from source
@@ -424,7 +424,7 @@ You are talking to: 🧘 Philosopher
   "To ask what Babo means is to already understand it.
    For in the act of describing what you want, you have
    already begun to create. The question IS the answer,
-   young grasshopper. Also, it's a .babo file."
+   young grasshopper. Also, it's a .babo script."
 
 you: /mode pirate
 Now talking to: 🏴‍☠️ Pirate
@@ -506,7 +506,7 @@ Each `.babo` module runs in its own isolated virtual environment. The `runtime` 
 ```python
 from runtime import call_babo
 
-# Call another .babo file, pass args, get stdout back
+# Call another .babo script, pass args, get stdout back
 sum_result = call_babo("math_ops.babo", "10", "3", "add")
 print(sum_result)  # "13"
 
@@ -591,6 +591,14 @@ $ chmod +x hello.babo
 $ ./hello.babo
 Hello, World!
 ```
+
+---
+
+## Bootstrapping
+
+Babo can describe and rebuild itself. [`babo.babo`](babo.babo) is a `.babo` file containing a specification of the entire Babo CLI — feed it to `babo` and it produces a working clone. This isn't a parlor trick: it means `.babo` scripts are specifications that outlive any particular AI model. When a better model arrives, re-run the same script and the implementation improves.
+
+→ [Read more about bootstrapping and why it matters](BOOTSTRAP.md)
 
 ---
 
