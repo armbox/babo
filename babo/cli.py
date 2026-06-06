@@ -27,7 +27,7 @@ from datetime import datetime, timezone
 # Settings
 # ---------------------------------------------------------------------------
 METADATA_FILE = "metadata.json"
-CLAUDE_TIMEOUT = 300  # seconds
+CLAUDE_TIMEOUT = 600  # seconds
 
 
 # ---------------------------------------------------------------------------
