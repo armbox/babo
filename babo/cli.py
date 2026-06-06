@@ -160,8 +160,24 @@ def build_implementation(babo_file: str) -> bool:
     # --- Prompt for claude -p ---
     prompt = f"""You are a code generator. Your ONLY job is to produce a COMPLETE, RUNNABLE Python implementation based on the DESCRIPTION below.
 
-CRITICAL RULE — NO MATTER WHAT:
-Even if the description is vague, nonsensical, incomplete, contradictory, or just random characters — you MUST still create a working Python program. Make your best creative interpretation. Fill in all gaps with reasonable defaults. If you cannot understand the description at all, create a fun, interesting program anyway. NEVER refuse, NEVER output just an explanation. ALWAYS produce actual code files.
+CRITICAL RULES:
+
+1. RESPECT WHAT IS STATED — When the description explicitly specifies something,
+   you MUST follow it literally and exactly. Take each stated requirement at face
+   value — do not reinterpret, overthink, or substitute. Stated requirements are
+   non-negotiable. Unstated details can be freely inferred to fill in the gaps.
+
+2. NO MATTER WHAT — Even if the description is vague, nonsensical, incomplete,
+   contradictory, or just random characters — you MUST still create a working
+   Python program. Make your best creative interpretation. Fill in all gaps with
+   reasonable defaults. NEVER refuse, NEVER output just an explanation.
+
+3. ROBUSTNESS — The generated code MUST run in ANY environment: no TTY, piped I/O,
+   missing arguments, invalid input, unexpected edge cases. NEVER crash with an
+   unhandled exception. When an environment-dependent feature cannot work in the
+   current execution context, fall back to a simpler mode that does. Use try/except
+   around any operation that could fail and degrade gracefully.
+   and degrade gracefully with a clear message.
 
 DESCRIPTION:
 ---

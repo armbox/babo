@@ -1,6 +1,6 @@
 Create the Babo CLI tool — a self-hosting natural-language scripting runtime.
 
-This program reads .babo files (plain-text descriptions of what a program should do), calls Claude Code to compile them into runnable Python implementations, caches the results in .baboc directories alongside the source files, and executes them.
+This program reads .babo files (plain-text descriptions of what a program should do), uses an AI code generation backend to compile them into runnable Python implementations, caches the results in .baboc directories alongside the source files, and executes them.
 
 CLI usage: babo <file.babo> [args...]
 
@@ -19,17 +19,31 @@ Implementation details:
    - Inside cache: babo entry script, requirements.txt, packages.txt, venv/, metadata.json
    - Check freshness: .baboc/<name>.baboc/ mtime > source .babo mtime AND babo entry file exists
 
-2. BUILD (calls claude -p):
+2. BUILD (calls AI backend):
    - Read the .babo file content as the program description
    - Copy a runtime.py module into the cache directory (provides call_babo() for cross-module calls)
-   - Call: claude -p <prompt> --bare --permission-mode acceptEdits --allowedTools Write,Edit,Bash,Read --output-format text --max-budget-usd 5
-   - The claude prompt MUST tell it to:
+   - Invoke the AI code generation backend with the description as a prompt, passing flags to:
+     * Run in minimal/isolated mode (no project config interference)
+     * Auto-accept file edits (non-interactive)
+     * Allow Write, Edit, Bash, Read tools
+     * Output plain text, with a budget limit
+   - The prompt sent to the AI MUST include these CRITICAL RULES for the generated code:
+     * RESPECT WHAT IS STATED — if the description explicitly specifies something, follow it
+       literally. Take each stated requirement at face value — do not reinterpret, overthink, or
+       substitute. Stated requirements are non-negotiable. Unstated details can be freely inferred.
+     * NO MATTER WHAT — even if the description is vague, nonsensical, incomplete, or just random
+       characters, ALWAYS create a working Python program. Make your best creative interpretation.
+       Fill in all gaps with reasonable defaults. NEVER refuse, NEVER output just an explanation.
+     * ROBUSTNESS — the generated code MUST run in ANY environment: no TTY, piped I/O, missing args,
+       invalid input, unexpected edge cases. NEVER crash with an unhandled exception. When interactive
+       features cannot work in the current execution context, fall back to a simpler mode. Use try/except
+       around any operation that could fail and degrade gracefully with a clear message.
+   - Also tell it to:
      * Always use Python, create a file named "babo" (no .py extension, with shebang, chmod +x)
-     * Generate complete runnable code from the description — no matter how vague or nonsensical
      * Create requirements.txt + packages.txt if external packages needed
      * Use Write tool to create files, Bash for chmod
      * runtime.py is available for calling other .babo files via call_babo()
-   - After claude-p returns successfully, create a Python virtualenv in cache/venv
+   - After the AI backend returns successfully, create a Python virtualenv in cache/venv
    - If requirements.txt exists, pip install -r requirements.txt into the venv
    - Verify the babo entry file was actually created, return success/failure
    - Never print status messages on success, only errors to stderr
@@ -57,5 +71,4 @@ Implementation details:
 
 7. The tool itself must be pip-installable with pyproject.toml and a babo/ package.
 
-Use the rich package for colored error output. Everything else is stdlib.
-No external dependencies needed beyond rich.
+Use only the Python standard library. No external dependencies.
